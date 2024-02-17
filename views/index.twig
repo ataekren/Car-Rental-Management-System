@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Car Rental Management System</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/reservation">Add a Car</a>
+                <a href="/car">Cars</a>
+                <a href="/shop">Our Shops</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero-section">
+        <div class="hero-content">
+            <h2>Welcome to the Car Rental Management System</h2>
+            <p>For Reservation +90 555 123 45 67</p>
+            <p>Ata Ekren - Car Rental Consultant</p>
+            <a href="/car" class="button">Car List</a>
+        </div>
+    </section>
+
+    <section id="carList">
+        <h2>Available Cars</h2>
+        <ul id = "testlist">
+
+        </ul>
+    </section>
+
+
+    <footer>
+        <p>&copy; Ata Ekren Car Rental Management System</p>
+    </footer>
+
+    <script>
+    window.addEventListener('load', () => {
+        getCars();
+    });
+
+    function getCars() {
+    fetch('/getCars', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.cars);
+        let liste = document.getElementById("testlist");
+        liste.innerHTML = "";
+        data.cars.forEach(element => {
+            if (element.Available === "Available") {
+                // Corrected the template literal syntax
+                liste.innerHTML += `
+                    <li>
+                        <h4>Model: ${element.Model}</h4>
+                        <p>Make: ${element.Make}</p>
+                        <p>Year: ${element.Year}</p>
+                        <p>Transmission: ${element.Transmission}</p>
+                        <p>Rental Fee: $${element.RentalFee}</p>
+                        <p>Availability: ${element.Available}</p>
+                        <p>Current Mileage: ${element.CurrentMileage}</p>
+                    </li>`;
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+    </script>
+
+    <br><br><br><br><br><br><br><br><br>
+</body>
+</html>

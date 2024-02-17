@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Car</title>
+    <link rel="stylesheet" href="reservation.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/reservation">Add a Car</a>
+        <a href="/car">Cars</a>
+        <a href="/shop">Our Shops</a>
+    </nav>
+
+    <section id="reservationForm">
+        <h2>Add a Rental Car</h2>
+        <form id="reservationForm" onsubmit="reserv(); return false;">
+            <label for="Model">Car Model:</label>
+            <input type="text" id="Model" name="Model" required>
+            
+            <label for="Make">Car Make:</label>
+            <input type="text" id="Make" name="Make" required>
+
+            <label for="Year">Car Year:</label>
+            <input type="int" id="Year" name="Year" required>
+            
+            <label for="CurrentMileage">Car Mileage:</label>
+            <input type="int" id="CurrentMileage" name="CurrentMileage" required>
+
+            <label for="RentalFee">Car Rental Fee:</label>
+            <input type="int" id="RentalFee" name="RentalFee" required>
+
+            <label for="Transmission">Car Transmission:</label>
+            <select id="Transmission" name="Transmission" required>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+            </select>
+
+            <label for="Availability">Car Availability:</label>
+            <select id="Availability" name="Availability" required>
+                <option value="Available">Available</option>
+                <option value="Not Available">Not Available</option>
+            </select>
+            <button type="submit">Submit Reservation</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; Ata Ekren Car Rental System</p>
+    </footer>
+
+    <script>
+    function reserv(){
+        let Model = document.getElementById("Model").value;
+        let Make = document.getElementById("Make").value;
+        let Year = document.getElementById("Year").value;
+        let Transmission = document.getElementById("Transmission").value;
+        let RentalFee = document.getElementById("RentalFee").value;
+        let CurrentMileage = document.getElementById("CurrentMileage").value;
+        let Available = document.getElementById("Availability").value;
+    
+
+    fetch('/reserv', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                Model: Model,
+                Make: Make,
+                Year: Year,
+                Transmission: Transmission,
+                RentalFee: RentalFee,
+                Available: Available,
+                CurrentMileage: CurrentMileage,
+            }),
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            alert("Car added to our Management System!")
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    </script>
+</body>
+</html>

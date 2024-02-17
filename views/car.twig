@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars</title>
+    <link rel="stylesheet" href="car.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/reservation">Add a Car</a>
+        <a href="/car">Cars</a>
+        <a href="/shop">Our Shops</a>
+    </nav>
+
+
+    <section id="carList">
+        <h2>Car List</h2>
+    <section id="carButtons">
+        <button onclick="getCars()">Show All Cars</button>
+        <button onclick="getManualCars()">Show Manual Cars</button>
+        <button onclick="getAutomaticCars()">Show Automatic Cars</button>
+    </section>
+        <ul id="testlist"></ul>
+    </section>
+
+
+    <footer>
+        <p>&copy; Ata Ekren Car Rental System</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            getCars();
+        });
+
+        function getCars() {
+            fetch('/getCars', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.cars);
+                let liste = document.getElementById("testlist");
+                liste.innerHTML = "";
+                data.cars.forEach(element => {
+                    liste.innerHTML += `
+                        <li>
+                            <h4>Model: ${element.Model}</h4>
+                            <p>Make: ${element.Make}</p>
+                            <p>Year: ${element.Year}</p>
+                            <p>Transmission: ${element.Transmission}</p>
+                            <p>Rental Fee: $${element.RentalFee}</p>
+                            <p>Availability: ${element.Available}</p>
+                            <p>Current Mileage: ${element.CurrentMileage}</p>
+                            <button onclick="deleteCar('${element.CarID}')">Delete This Car</button>
+                            <button onclick="changeAvailability('${element.CarID}', '${element.Available}')">Change Availability</button>
+                        </li>`;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+    function getManualCars() {
+    fetch('/getCars?type=manual', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.cars);
+        let liste = document.getElementById("testlist");
+        liste.innerHTML = "";
+        data.cars.forEach(element => {
+            if (element.Transmission.toLowerCase() === "manual") {
+                liste.innerHTML += `
+                    <li>
+                        <h4>Model: ${element.Model}</h4>
+                        <p>Make: ${element.Make}</p>
+                        <p>Year: ${element.Year}</p>
+                        <p>Transmission: ${element.Transmission}</p>
+                        <p>Rental Fee: $${element.RentalFee}</p>
+                        <p>Availability: ${element.Available}</p>
+                        <p>Current Mileage: ${element.CurrentMileage}</p>
+                        <button onclick="deleteCar('${element.CarID}')">Delete This Car</button>
+                        <button onclick="changeAvailability('${element.CarID}', '${element.Available}')">Change Availability</button>
+                    </li>`;
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+function getAutomaticCars() {
+    fetch('/getCars?type=automatic', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.cars);
+        let liste = document.getElementById("testlist");
+        liste.innerHTML = ""; // Clear the list before adding new elements
+        data.cars.forEach(element => {
+            if (element.Transmission.toLowerCase() === "automatic") {
+                // Corrected the template literal syntax
+                liste.innerHTML += `
+                    <li>
+                        <h4>Model: ${element.Model}</h4>
+                        <p>Make: ${element.Make}</p>
+                        <p>Year: ${element.Year}</p>
+                        <p>Transmission: ${element.Transmission}</p>
+                        <p>Rental Fee: $${element.RentalFee}</p>
+                        <p>Availability: ${element.Available}</p>
+                        <p>Current Mileage: ${element.CurrentMileage}</p>
+                        <button onclick="deleteCar('${element.CarID}')">Delete This Car</button>
+                        <button onclick="changeAvailability('${element.CarID}', '${element.Available}')">Change Availability</button>
+                    </li>`;
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+    function deleteCar(CarID) {
+        fetch(`/DeleteCar?plate=${CarID}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Car Deleted:', data);
+                location.reload();
+            })
+            .catch(error => console.error("Deletion error:", error));
+    }
+
+    function changeAvailability(carID, currentAvailability) {
+        const newAvailability = currentAvailability === 'Available' ? 'Not Available' : 'Available';
+
+        fetch(`/ChangeAvailability?carID=${carID}&availability=${newAvailability}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Availability Changed:', data);
+                location.reload();
+            })
+            .catch(error => console.error('Availability change error:', error));
+    }
+    </script>
+    <br><br><br><br><br><br><br><br><br>
+</body>
+</html>
