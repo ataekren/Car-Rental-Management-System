@@ -5,10 +5,10 @@ const app = express();
 const port = 3000;
 
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',   // Your mySQL server password here
-  database: 'carrentalsystem'
+  host: process.env.DB_HOST,        // MySQL host
+  user: process.env.DB_USER,        // MySQL user
+  password: process.env.DB_PASS,    // MySQL password
+  database: process.env.DB_NAME     // MySQL database
 });
 
 db.connect((err) => {
