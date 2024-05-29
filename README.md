@@ -109,4 +109,4 @@ The system uses the following environment variables:
 
 ---
 
-Thank you for using the Car Rental Management System! If you have any questions or need further assistance, please feel free to contact me.
+If you have any questions or need further assistance, please feel free to contact me.
