@@ -9,8 +9,6 @@ Welcome to the Car Rental Management System! This project is designed to manage 
 - [API Endpoints](#api-endpoints)
 - [Technologies Used](#technologies-used)
 - [Environment Variables](#environment-variables)
-- [Contributing](#contributing)
-
 
 ## Features
 - **View Available Cars**: Customers can view the list of available cars for rent.
@@ -108,14 +106,6 @@ The system uses the following environment variables:
 - `DB_USER`: MySQL user.
 - `DB_PASS`: MySQL password.
 - `DB_NAME`: MySQL database name.
-
-## Contributing
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a Pull Request.
 
 ---
 
