@@ -21,6 +21,7 @@
         <button onclick="getCars()">Show All Cars</button>
         <button onclick="getManualCars()">Show Manual Cars</button>
         <button onclick="getAutomaticCars()">Show Automatic Cars</button>
+        <button onclick="getAvailableCars()">Show Available Cars</button>
     </section>
         <ul id="testlist"></ul>
     </section>
@@ -159,6 +160,41 @@ function getAutomaticCars() {
             })
             .catch(error => console.error('Availability change error:', error));
     }
+
+    function getAvailableCars() {
+        fetch('/getCars', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.cars);
+            let liste = document.getElementById("testlist");
+            liste.innerHTML = "";
+            data.cars.forEach(element => {
+                if (element.Available.toLowerCase() === "available") {
+                    liste.innerHTML += `
+                        <li>
+                            <h4>Model: ${element.Model}</h4>
+                            <p>Make: ${element.Make}</p>
+                            <p>Year: ${element.Year}</p>
+                            <p>Transmission: ${element.Transmission}</p>
+                            <p>Rental Fee: $${element.RentalFee}</p>
+                            <p>Availability: ${element.Available}</p>
+                            <p>Current Mileage: ${element.CurrentMileage}</p>
+                            <button onclick="deleteCar('${element.CarID}')">Delete This Car</button>
+                            <button onclick="changeAvailability('${element.CarID}', '${element.Available}')">Change Availability</button>
+                        </li>`;
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     </script>
     <br><br><br><br><br><br><br><br><br>
 </body>
