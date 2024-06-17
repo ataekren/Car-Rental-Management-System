@@ -60,7 +60,6 @@ app.post('/getCars', (req, res) => {
           res.status(500).json({ error: 'Internal Server Error' });
       } else {
           res.json({ cars: results });
-          console.log(results);
       }
   });
 });
